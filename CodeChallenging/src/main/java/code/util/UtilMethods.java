@@ -98,15 +98,18 @@ public class UtilMethods {
 	 */
 	public static String getPropertiesFile(String key) throws IOException {
 
-		ClassLoader loader = Thread.currentThread().getContextClassLoader();
-		Properties properties = new Properties();
-		try (InputStream resourceStream = loader.getResourceAsStream(propertyFileName)) {
-			properties.load(resourceStream);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+                ClassLoader loader = Thread.currentThread().getContextClassLoader();
+                Properties properties = new Properties();
+                try (InputStream resourceStream = loader.getResourceAsStream(propertyFileName)) {
+                        if (resourceStream == null) {
+                                throw new IOException("Unable to locate " + propertyFileName);
+                        }
+                        properties.load(resourceStream);
+                } catch (IOException e) {
+                        e.printStackTrace();
+                }
 
-		return (String) properties.get(key);
+                return (String) properties.get(key);
 	}
 
 }
